@@ -19,7 +19,7 @@
                         <h2 class="font-semibold text-xl text-gray-800 leading-tight py-1">
                             <a href="{{ route('posts.show', $post->id) }}" class="hover:underline">{{ $post->title }}</a>
                         </h2>
-                        <div class="mx-5">{{ $post->content }}</div>
+                        <div class="mx-5">{{ Illuminate\Support\Str::limit($post->content, 300) }}</div>
                     </li>
                 @endforeach
                 </ul>

@@ -8,6 +8,11 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg py-10 px-10">
+                @if($photo = $post->photo)
+                    <div class="my-4 flex justify-center">
+                        <img src="{{ $photo->url }}" alt="" width="500" height="600">
+                    </div>
+                @endif
                 <h1 class="flex font-semibold text-xl text-gray-800 leading-tight justify-center">
                     {{ __($post->title) }}
                 </h1>

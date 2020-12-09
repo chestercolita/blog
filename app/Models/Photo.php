@@ -9,9 +9,20 @@ class Photo extends Model
 {
     use HasFactory;
 
+    protected $directory = '/images/';
+
+    protected $fillable = [
+        'url'
+    ];
+
     public function imageable()
     {
        return $this->morphTo();
+    }
+
+    public function getUrlAttribute($value)
+    {
+        return $this->directory . $value;
     }
 
 }

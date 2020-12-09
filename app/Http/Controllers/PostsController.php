@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 
 class PostsController extends Controller
 {
@@ -36,12 +37,21 @@ class PostsController extends Controller
      */
     public function store(Request $request)
     {
+        $user = auth()->user();
         $request->validate([
             'title' => 'required|max:255',
             'content' => 'required'
         ]);
-        $user = auth()->user();
-        $user->posts()->create($request->all());
+        $post = $user->posts()->create($request->all());
+
+        if($file = $request->file('image')){
+            $filename = $file->getClientOriginalName();
+            $file->move(public_path('images'), $filename);
+            $post->photo()->create([
+                'url' => $filename
+            ]);
+        }
+
         return redirect()->route('posts.index');
     }
 
@@ -82,10 +92,20 @@ class PostsController extends Controller
             'title' => 'required|max:255',
             'content' => 'required'
         ]);
-        Post::whereId($id)->update([
+        $post = Post::find($id);
+        $post->update([
             'title' => $data['title'],
             'content' => $data['content']
         ]);
+
+        if($file = $request->file('image')) {
+            $filename = $file->getClientOriginalName();
+            $file->move(public_path('images'), $filename);
+            $post->photo()->updateOrCreate([
+                'url' => $filename
+            ]);
+        }
+
         return redirect()->route('posts.index');
     }
 
@@ -97,7 +117,12 @@ class PostsController extends Controller
      */
     public function destroy($id)
     {
-        Post::whereId($id)->delete();
+        $post = Post::find($id);
+        if($photo = $post->photo) {
+            File::delete(public_path($photo->url));
+            $post->photo()->delete();
+        }
+        $post->delete();
         return redirect()->route('posts.index');
     }
 }
