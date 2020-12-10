@@ -74,13 +74,4 @@ class User extends Authenticatable
         return $this->morphOne(Photo::class, 'imageable');
     }
 
-    public function isAdmin()
-    {
-        foreach($this->roles as $role) {
-            if($role->name === 'administrator')
-                return true;
-        }
-
-        return false;
-    }
 }

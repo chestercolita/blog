@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class IsAdmin
+class CheckRole
 {
     /**
      * Handle an incoming request.
@@ -21,7 +21,6 @@ class IsAdmin
         foreach($user->roles as $role) {
             if(!$role->name === $rolename)
                 return redirect()->route('dashboard');
-
         }
 
         return $next($request);

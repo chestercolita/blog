@@ -7,6 +7,11 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            @if (session()->has('success'))
+                <div class="text-center bg-green-200 bg-opacity-50 text-sm overflow-hidden shadow-sm sm:rounded-lg py-3 mb-6" role="alert">
+                    {{ session('success') }}
+                </div>
+            @endif
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg py-10 px-10">
                 @if($photo = $post->photo)
                     <div class="my-4 flex justify-center">
@@ -17,19 +22,21 @@
                     {{ __($post->title) }}
                 </h1>
                 <div class="flex justify-center mb-6">by {{ $post->user->name }}</div>
-                <div class="flex justify-center">
-                    <a href="{{ route('posts.edit', $post->id) }}"
-                       class="ml-4 inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white
-                       uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:shadow-outline-gray
-                       disabled:opacity-25 transition ease-in-out duration-150">
-                        {{ __("  Edit  ")  }}
-                    </a>
-                    <form method="POST" action="{{ route('posts.destroy', $post->id) }}">
-                        @csrf
-                        @method('DELETE')
-                        <x-jet-danger-button type="submit" href="{{ route('posts.edit', $post->id) }}" class="ml-4">Delete</x-jet-danger-button>
-                    </form>
-                </div>
+                @if(auth()->user() == $post->user)
+                    <div class="flex justify-center">
+                        <a href="{{ route('posts.edit', $post->id) }}"
+                           class="ml-4 inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white
+                           uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:shadow-outline-gray
+                           disabled:opacity-25 transition ease-in-out duration-150">
+                            {{ __("  Edit  ")  }}
+                        </a>
+                        <form method="POST" action="{{ route('posts.destroy', $post->id) }}">
+                            @csrf
+                            @method('DELETE')
+                            <x-jet-danger-button type="submit" href="{{ route('posts.edit', $post->id) }}" class="ml-4">Delete</x-jet-danger-button>
+                        </form>
+                    </div>
+                @endif
                 <div class="d-block mx-6 mt-12">
                     {{ $post->content }}
                 </div>
