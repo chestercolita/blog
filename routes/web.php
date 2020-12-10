@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Mail;
 |
 */
 
-Route::get('/sendmail', function () {
+Route::get('/', function () {
     return redirect()->route('dashboard');
 });
 
