@@ -15,11 +15,14 @@ class IsAdmin
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle(Request $request, Closure $next)
+    public function handle(Request $request, Closure $next, $rolename)
     {
         $user = Auth::user();
-        if(!$user->isAdmin())
-            return redirect()->route('dashboard');
+        foreach($user->roles as $role) {
+            if(!$role->name === $rolename)
+                return redirect()->route('dashboard');
+
+        }
 
         return $next($request);
     }
