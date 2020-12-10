@@ -4,9 +4,9 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
-class IsAdmin
+class PreventEditDeleteIfNotAuthor
 {
     /**
      * Handle an incoming request.
@@ -17,10 +17,11 @@ class IsAdmin
      */
     public function handle(Request $request, Closure $next)
     {
-        $user = Auth::user();
-        if(!$user->isAdmin())
-            return redirect()->route('dashboard');
-
+        $route = $request->route();
+        $checkRoutes = ['posts.edit', 'posts.update', 'posts.destroy'];
+        if(Str::contains($route->getName(), $checkRoutes)) {
+            return back();
+        }
         return $next($request);
     }
 }

@@ -12,6 +12,16 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            @if (session()->has('success'))
+                <div class="text-center bg-green-200 bg-opacity-50 text-sm overflow-hidden shadow-sm sm:rounded-lg py-3 mb-6" role="alert">
+                    {{ session('success') }}
+                </div>
+            @endif
+            @if (session()->has('danger'))
+                <div class="text-center bg-red-200 bg-opacity-50 text-sm overflow-hidden shadow-sm sm:rounded-lg py-3 mb-6" role="alert">
+                    {{ session('danger') }}
+                </div>
+            @endif
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg py-10 px-10">
                 <ul>
                 @foreach($posts as $post)

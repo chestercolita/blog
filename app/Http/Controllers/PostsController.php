@@ -5,13 +5,15 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Session;
 
 class PostsController extends Controller
 {
 
-    public function __construct()
+    public function __construct(Request $request)
     {
         $this->middleware('auth');
+        $this->middleware('postAuthor');
     }
 
     /**
@@ -58,6 +60,7 @@ class PostsController extends Controller
             ]);
         }
 
+        $request->session()->flash('success', 'Post was created successfully!');
         return redirect()->route('posts.index');
     }
 
@@ -112,7 +115,8 @@ class PostsController extends Controller
             ]);
         }
 
-        return redirect()->route('posts.index');
+        $request->session()->flash('success', 'Post was updated successfully!');
+        return redirect()->route('posts.show', $post->id);
     }
 
     /**
@@ -129,6 +133,8 @@ class PostsController extends Controller
             $post->photo()->delete();
         }
         $post->delete();
+
+        Session::flash('danger', 'Post was deleted successfully!');
         return redirect()->route('posts.index');
     }
 }
