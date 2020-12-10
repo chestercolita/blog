@@ -25,17 +25,17 @@ class Post extends Model
 
     public function user()
     {
-        return $this->belongsTo('App\Models\User');
+        return $this->belongsTo(User::class);
     }
 
     public function photo()
     {
-        return $this->morphOne('App\Models\Photo', 'imageable');
+        return $this->morphOne(Photo::class, 'imageable');
     }
 
     public function tags()
     {
-        return $this->morphToMany('App\Models\Tag', 'taggable');
+        return $this->morphToMany(Tag::class, 'taggable');
     }
 
 }

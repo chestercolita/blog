@@ -61,11 +61,26 @@ class User extends Authenticatable
 
     public function posts()
     {
-        return $this->hasMany('App\Models\Post');
+        return $this->hasMany(Post::class);
+    }
+
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class);
     }
 
     public function photo()
     {
-        return $this->morphOne('App\Models\Photo', 'imageable');
+        return $this->morphOne(Photo::class, 'imageable');
+    }
+
+    public function isAdmin()
+    {
+        foreach($this->roles as $role) {
+            if($role->name === 'administrator')
+                return true;
+        }
+
+        return false;
     }
 }
