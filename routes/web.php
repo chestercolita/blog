@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\PagesController;
 use App\Http\Controllers\PostsController;
+use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('dashboard');
 });
 
 Route::get('/dashboard', [PagesController::class, 'dashboard'])->name('dashboard');
@@ -25,7 +26,4 @@ Route::get('/services', [PagesController::class, 'services'])->name('services');
 
 Route::resource('/posts', PostsController::class);
 
-//Route::get('/post/{id}/user', function($id){
-//   return Post::find($id)->user->name;
-//});
-
+Route::get('/admin', [AdminController::class, 'index']);

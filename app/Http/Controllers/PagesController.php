@@ -14,7 +14,7 @@ class PagesController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth')->except(['about', 'services']);
+
     }
 
     public function dashboard() {
